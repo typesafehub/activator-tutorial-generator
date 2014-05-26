@@ -1,0 +1,1 @@
+name := "activator-tutorial-generator"
