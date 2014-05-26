@@ -31,7 +31,7 @@ lazy val plugin = project
 
 def common: Seq[Setting[_]] = Seq(
   organization := "com.typesafe.activator",
-  version := "1.0.3-SNAPSHOT",
+  version := "1.0.3",
   scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 )
 
