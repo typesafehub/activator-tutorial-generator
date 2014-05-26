@@ -54,7 +54,7 @@ Typically, you would not want the plugin installed in an activator template, sin
 ```scala
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-"com.typesafe.sbt" %% "sbt-activator-tutorial-generator" % "1.0.1"
+"com.typesafe.sbt" %% "sbt-activator-tutorial-generator" % "1.0.3"
 ```
 
 ## Running the tutorial

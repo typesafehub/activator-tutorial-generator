@@ -1,9 +1,5 @@
 
-organization := "com.typesafe.activator"
-
 name := "activator-tutorial"
-
-version := "1.0.1-SNAPSHOT"
 
 lazy val root = project
   .in(file("."))
@@ -35,7 +31,7 @@ lazy val plugin = project
 
 def common: Seq[Setting[_]] = Seq(
   organization := "com.typesafe.activator",
-  version := "1.0.0-SNAPSHOT",
+  version := "1.0.3-SNAPSHOT",
   scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 )
 
