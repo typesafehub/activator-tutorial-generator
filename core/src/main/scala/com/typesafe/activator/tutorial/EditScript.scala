@@ -51,33 +51,33 @@ object EditScript {
     }
   }
 
-  private def insertAt[A](list: List[A], index: Int, toInsert: List[A]): List[A] = {
+  private def insertAt[A](list: List[A], index: Int, toInsert: List[A], filename: String): List[A] = {
     index match {
       case i if i <= 0 => toInsert ::: list
       case i if list.size < i =>
-        throw new IndexOutOfBoundsException("Cannot insert at " + index + " in list of size " + list.size)
+        throw new IndexOutOfBoundsException(s"Cannot insert at $index into file $filename with ${list.size} lines")
       case _ =>
-        list.head :: insertAt(list.tail, index - 1, toInsert)
+        list.head :: insertAt(list.tail, index - 1, toInsert, filename)
     }
   }
 
-  private def deleteAt[A](list: List[A], start: Int, length: Int): List[A] = {
+  private def deleteAt[A](list: List[A], start: Int, length: Int, filename: String): List[A] = {
     start match {
       case i if i <= 0 => list.drop(length)
       case i if list.size < i =>
-        throw new IndexOutOfBoundsException("Cannot delete at " + start + " in list of size " + list.size)
+        throw new IndexOutOfBoundsException(s"Cannot delete at $start in file $filename with ${list.size} lines")
       case _ =>
-        list.head :: deleteAt(list.tail, start - 1, length)
+        list.head :: deleteAt(list.tail, start - 1, length, filename)
     }
   }
 
-  private def changeAt[A](list: List[A], start: Int, length: Int, toReplace: List[A]): List[A] = {
+  private def changeAt[A](list: List[A], start: Int, length: Int, toReplace: List[A], filename: String): List[A] = {
     start match {
       case i if i <= 0 => toReplace ::: list.drop(length)
       case i if list.size < i =>
-        throw new IndexOutOfBoundsException("Cannot change at " + start + " in list of size " + list.size)
+        throw new IndexOutOfBoundsException(s"Cannot change at $start in file $filename with ${list.size} lines")
       case _ =>
-        list.head :: changeAt(list.tail, start - 1, length, toReplace)
+        list.head :: changeAt(list.tail, start - 1, length, toReplace, filename)
     }
   }
 
@@ -87,20 +87,20 @@ object EditScript {
    * @param commands The script to run
    * @param fileLines The lines of the file
    */
-  def runEditScript(commands: List[EditCommand], fileLines: List[String]): List[String] = {
+  def runEditScript(commands: List[EditCommand], fileLines: List[String], filename: String): List[String] = {
     commands.headOption match {
       case Some(command) =>
         val newFileLines = command match {
           case AppendCommand(line, toAppend) =>
-            insertAt(fileLines, line, toAppend)
+            insertAt(fileLines, line, toAppend, filename)
           case InsertCommand(line, toInsert) =>
-            insertAt(fileLines, line - 1, toInsert)
+            insertAt(fileLines, line - 1, toInsert, filename)
           case DeleteCommand(start, end) =>
-            deleteAt(fileLines, start - 1, end - start + 1)
+            deleteAt(fileLines, start - 1, end - start + 1, filename)
           case ChangeCommand(start, end, toReplace) =>
-            changeAt(fileLines, start - 1, end - start + 1, toReplace)
+            changeAt(fileLines, start - 1, end - start + 1, toReplace, filename)
         }
-        runEditScript(commands.tail, newFileLines)
+        runEditScript(commands.tail, newFileLines, filename)
       case None => fileLines
     }
   }

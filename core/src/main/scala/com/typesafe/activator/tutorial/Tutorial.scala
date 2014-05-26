@@ -61,25 +61,16 @@ object Tutorial {
     val lines = if (file.exists()) {
       readFile(file)
     } else Nil
-    writeFile(file, EditScript.runEditScript(editScript.script, lines).mkString("\n"))
-  }
-
-  private def runShellCommand(command: ShellCommand, baseDir: File, logger: String => Unit) = {
-    import scala.sys.process.Process
-
-    logger("Running command: " + command.command)
-    val rc = Process(command.command, baseDir).!
-
-    if (rc != 0) throw new RuntimeException("Command " + command.command + " failed with return code " + rc)
+    writeFile(file, EditScript.runEditScript(editScript.script, lines, editScript.filename).mkString("\n"))
   }
 
   /**
    * Run the given tutorial on the given base directory
    */
-  def runTutorial(tutorial: List[TutorialPart], baseDir: File, logger: String => Unit) = {
+  def runTutorial(tutorial: List[TutorialPart], baseDir: File, commandRunner: String => Unit, logger: String => Unit) = {
     tutorial.foreach {
       case edit: EditScriptPart => runEditScript(edit, baseDir, logger)
-      case shell: ShellCommand => runShellCommand(shell, baseDir, logger)
+      case shell: ShellCommand => commandRunner(shell.command)
       case _ => ()
     }
   }
