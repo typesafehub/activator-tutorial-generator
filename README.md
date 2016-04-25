@@ -49,12 +49,10 @@ A shell command is indicated by a line that starts with `@@`.  Everything after 
 
 ## Installing the plugin
 
-Typically, you would not want the plugin installed in an activator template, since the end user does not need it.  So the best place to install it is globally.  This can be done by adding the followin to `~/.sbt/0.13/plugins/build.sbt`:
+Typically, you would not want the plugin installed in an activator template, since the end user does not need it.  So the best place to install it is globally.  This can be done by adding the followin to `~/.sbt/0.13/plugins/plugins.sbt`:
 
 ```scala
-resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
-
-"com.typesafe.sbt" %% "sbt-activator-tutorial-generator" % "1.0.3"
+addSbtPlugin("com.typesafe.sbt" % "sbt-activator-tutorial-generator" % "1.0.3")
 ```
 
 ## Running the tutorial
